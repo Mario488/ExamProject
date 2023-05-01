@@ -1,0 +1,135 @@
+{% extends 'base.html'%}
+{% load static %}
+{% block styles %}
+<style>
+    
+    .container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .item {
+      width: 300px;
+      margin-bottom: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    
+    .item img {
+      width: 100%;
+      height: auto;
+      margin-bottom: 10px;
+    }
+    
+    .item p {
+      margin: 5px 0;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+    .item{
+        user-select: none;
+    }
+    .item .description {
+      display: none;
+      margin-top: 10px;
+    }
+    
+    .item .arrow {
+      cursor: pointer;
+      font-size: 1.3rem;
+    }
+    .reserve{
+        background-color: crimson;
+        color: #fff;
+        border: none;
+        border-radius: 3px;
+        padding: 3px;
+        font-size: 1.1rem;
+        cursor: pointer;
+    }
+    .reserve:hover{
+        background-color: rgb(174, 69, 90);
+    }
+    .container2{
+        text-align: center;
+    }
+    .container2 *{
+        font-size: 1.5rem;
+    }
+    .message p {
+        background-color: #ffe6e6;
+        border: 2px solid #ff8080;
+        border-radius: 5px;
+        color: #ff4040;
+        font-size: 1.8rem;  
+        font-weight: bold;
+        margin: 10px 0;
+        padding: 10px;
+        text-align: center;
+        transition: background-color 0.3s ease;
+    }
+
+.message p:hover {
+        background-color: #ff8080;
+        color: #ffe6e6;
+        cursor: not-allowed;
+    }
+    .item p{
+        font-size: 1.3rem;
+    }
+</style>
+
+{% endblock %}
+{% block body%}
+    {% for message in messages %}
+        <div class="message">
+            <p>{{message}}</p>  
+        </div>
+    {% endfor %}
+    <div class="container2">
+        <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" value="POST1" name="post">
+            <input type="text" name="search_input" placeholder="Search Smartphone" autocomplete="off">
+            <button id="search_button">Search</button>
+        </form>
+    </div>
+
+    <div class="container">
+      {% for events in event %}
+        <div class="item">
+          <img src="/static/{{events.Name}}.jpg" alt="event_image">
+          <p>Име: <br>{{events.Name}}</p>
+          <p>Описание: <span class="arrow">⬇️</span></p>
+          <p class="description">{{events.Description}}</p>
+          <p>Дата: {{events.Date}}</p>
+          <form method="POST">
+            {% csrf_token %}
+            <input type="hidden" value="POST2" name="post">
+            <input type="hidden" value="{{events.Name}}" name="eventName">
+            <button class="reserve">Резервирай</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
+    
+<script>
+    const arrows = document.querySelectorAll('.arrow');
+    
+    arrows.forEach((arrow) => {
+    arrow.addEventListener('click', () => {
+        const description = arrow.parentElement.nextElementSibling;
+        
+        if (description.style.display == 'none') {
+        description.style.display = 'block';
+        arrow.innerHTML = '⬆️';
+        } else {
+        description.style.display = 'none';
+        arrow.innerHTML = '⬇️';
+        }
+    });
+    });
+</script>
+{% endblock %}

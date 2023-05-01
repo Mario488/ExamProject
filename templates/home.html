@@ -1,0 +1,122 @@
+{% extends 'base.html' %}
+{% block styles%}
+<style>
+    .message p {
+    background-color: #ffe6e6;
+    border: 2px solid #ff8080;
+    border-radius: 5px;
+    color: #ff4040;
+    font-size: 1.8rem;  
+    font-weight: bold;
+    margin: 10px 0;
+    padding: 10px;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.message p:hover {
+    background-color: #ff8080;
+    color: #ffe6e6;
+    cursor: not-allowed;
+}
+
+
+h1 {
+    text-align: center;
+    font-size: 48px;
+    margin-top: 50px;
+}
+
+.button {
+    display: inline-block;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: #fff;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #3e8e41;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 50px;
+    text-align: center;
+}
+
+.summary-container {
+display: flex;
+justify-content: space-between;
+margin: 20px 0;
+}
+
+.summary-item {
+background-color: #f2f2f2;
+border-radius: 5px;
+padding: 20px;
+text-align: center;
+width: 30%;
+}
+
+.summary-item h3 {
+font-size: 18px;
+margin-bottom: 10px;  
+}
+
+.summary-item p {
+font-size: 24px;
+font-weight: bold;
+margin: 0;
+}
+</style>
+
+{% endblock %}
+
+{% block body%}
+
+{% for message in messages %}
+    <div class="message">
+        <p>{{message}}</p>  
+    </div>
+{% endfor %}
+
+<h1>Резервации за събития</h1>
+    
+    {% if user.is_authenticated and user.is_staff %}
+    <div class="summary-container">
+        <div class="summary-item">
+          <h3>Брой потребители</h3>
+          <p>{{ user_count }}</p>
+        </div>
+        <div class="summary-item">
+          <h3>Брой събития</h3>
+          <p>{{ event_count }}</p>
+        </div>
+        <div class="summary-item">
+          <h3>Брой резервирани билети</h3>
+          <p>{{ bookedTickets }}</p>
+        </div>
+      </div>
+      
+    {% endif %}
+
+    <div class="container">
+        <p style="font-size: 2rem;">Добре дошли в нашия уебсайт за резервации за събития. Можете да разгледате нашата текуща оферта от събития и да резервирате своите билети онлайн.</p>
+        
+        <a href="{% url 'reserve' %}" class="button">Преглед на събитията</a>
+        
+        {% if user.is_authenticated == False %}
+            <a href="{% url 'login' %}" class="button">Вход</a>
+            <a href="{% url 'sign_up' %}" class="button">Регистрация</a>
+        {% endif %}
+    </div>
+{% endblock %}

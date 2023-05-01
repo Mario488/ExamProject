@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Events Manager</title>
+    <style>
+        body{
+            margin: 0;
+            padding: 0;
+        }
+        ul{
+            display: flex;
+            list-style-type: none;  
+            background-color: black;
+            color: #fff;
+            font-size: 1.5rem;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        li{ 
+            cursor: pointer;
+            margin-left: 70px;
+            flex: 1;
+        }
+        li:hover{
+            color: red;
+        }
+        a{
+            text-decoration: none;
+            color: inherit;
+        }
+        
+    </style>
+    {% block styles %}
+    {% endblock %}
+</head>
+<body>
+    <ul>
+        <li><a href="{% url 'home' %}">Home</a></li>
+        <li><a href="{% url 'reserve' %}">Events</a></li>
+        {% if user.is_authenticated == True %}
+            <li><a href="{% url 'profile' %}">Profile</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+        {% else %}  
+            <li><a href="{% url 'login' %}">Login</a></li>
+            <li><a href="{% url 'sign_up' %}">Sign Up</a></li>
+        {% endif %}
+    </ul>
+    {% block body%}
+    {% endblock %}
+
+</body>
+</html>
